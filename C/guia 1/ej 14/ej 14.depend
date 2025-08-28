@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1755640445 source:c:\users\asus\desktop\c\ej 14\main.c
+	<stdio.h>
+	<stdlib.h>
+
