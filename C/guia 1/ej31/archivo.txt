@@ -1,0 +1,6 @@
+CiudadVeinteCaracteres 1 35.5 20.3
+NombreCiudadExacta20   2 33.1 18.9
+OtraCiudadLargaLarga  3 30.0 15.0
+NombreCon20Caracteres 4 28.7 10.2
+MaximoDeVeinteCharsSS 5 32.4 19.0
+CiudadConLargoDeVeint 6 31.0 17.5
