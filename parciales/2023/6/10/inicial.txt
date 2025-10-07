@@ -1,0 +1,7 @@
+A Retiro 3
+B C D
+B Tigre 2
+C D
+C SanIsidro 1
+A
+D Delta 0

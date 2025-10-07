@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1759548866 source:c:\users\asus\desktop\c\26.04.2024\cola.c
+	"cola.h"
+
+1759548866 c:\users\asus\desktop\c\26.04.2024\cola.h
+
+1759551187 source:c:\users\asus\desktop\c\26.04.2024\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"cola.h"
+

@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1759180217 source:c:\users\asus\desktop\c\2016\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+
+1759180202 c:\users\asus\desktop\c\2016\pila.h
+
+1759181239 source:c:\users\asus\desktop\c\2016\pila.c
+	"pila.h"
+
