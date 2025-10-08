@@ -25,9 +25,6 @@ typedef struct
 }tlistaLD;
 
 void cargaLD(tlistaLD *ld);
-tlista buscarC(tlista pri,char cod);
-char minC(tlista pri);
-char maxC(tlista pri);
 void viaje(tlistaLD ld);
 
 int main()
@@ -43,7 +40,7 @@ void cargaLD(tlistaLD *ld)
     FILE *arch=fopen("inicial.txt","r");
     char cod,nom[31];
     int i,n;
-    tlista act;
+    tlista antld,nuevoLD,act;
     sublista nuevo,ant;
           ld->pri=NULL;
           ld->ult=NULL;
@@ -52,19 +49,33 @@ void cargaLD(tlistaLD *ld)
           else {
                fscanf(arch," %c %s %d",&cod,nom,&n);
                while (!feof(arch)) {
-                   act=buscarC(ld->pri,cod);
+                   act=ld->pri;
+                   while (act!=NULL && act->cod <cod)
+                   {
+                       antld=act;
+                       act=act->sig;
+                   }
                    if (act==NULL) {
-                      act=(tlista)malloc(sizeof(nodo));
-                      act->cod=toupper(cod);
-                      strcpy(act->nom,nom);
-                      act->sub=NULL;
-                      act->sig=NULL;
-                      act->ant=ld->ult;
-                      if (ld->pri==NULL && ld->ult==NULL)
-                        ld->pri=act;
+                      nuevoLD=(tlista)malloc(sizeof(nodo));
+                      nuevoLD->cod=toupper(cod);
+                      strcpy(nuevoLD->nom,nom);
+                      nuevoLD->sub=NULL;
+                      if (ld->pri==NULL && ld->ult==NULL) {
+                        nuevoLD->sig=NULL;
+                        nuevoLD->ant=NULL;
+                        ld->pri=nuevoLD;
+                        ld->ult=nuevoLD;
+                      }
                       else
-                          ld->ult->sig=act;
-                    ld->ult=act;
+                      {
+                          antld->sig=nuevoLD;
+                          nuevoLD->ant=antld;
+                          nuevoLD->sig=act;
+                          if (act)
+                            act->ant=nuevoLD;
+
+                      }
+                      act=nuevoLD;
                    }
                    ant=act->sub;
                    for (i=1;i<=n;i++){
@@ -83,48 +94,17 @@ void cargaLD(tlistaLD *ld)
           fclose(arch);
 }
 
-tlista buscarC(tlista pri,char cod) {
-     while (pri!=NULL && pri->cod!=cod)
-        pri=pri->sig;
-    return pri;
-}
-
-char minC(tlista pri) {
-  char min='Z',aux;
-       while (pri!=NULL) {
-            aux=toupper(pri->cod);
-           if (aux <min)
-              min=aux;
-           pri=pri->sig;
-       }
-      return min;
-}
-
-char maxC(tlista pri) {
-  char max='A',aux;
-       while (pri!=NULL) {
-            aux=toupper(pri->cod);
-           if (aux >max)
-              max=aux;
-           pri=pri->sig;
-       }
-      return max;
-}
-
 void viaje(tlistaLD ld)
 {
- char parada,min=minC(ld.pri),max=maxC(ld.pri);
- tlista aux;
- int ida=1,incr=1,distancia,contv=0;
+ char parada;
+ tlista aux=ld.pri;
+ int ida=1,distancia,contv=0;
  sublista ant,eliminar,act;
  float ac=0;
  tpila p;
            iniciap(&p);
-           parada=min;
-           while ((parada <= max && ida) || (!ida && parada >= min)){
-              aux=buscarC(ld.pri,parada);
-              if (aux!=NULL)
-              {
+           parada=ld.pri->cod;
+           while (aux){
                   act=aux->sub;
                   while (act!=NULL && !tope(p)) {
                     ant=act;
@@ -148,13 +128,17 @@ void viaje(tlistaLD ld)
                         act=act->sig;
                   }
                   decensop(&p,parada);
-              }
-              if (parada==max) {
+              if (ida)
+                aux=aux->sig;
+              else
+                aux=aux->ant;
+              if (!aux && ida) {
                   ida=0;
-                  incr=-1;
+                  aux=ld.ult;
               }
-              parada +=incr;
-           }
+              if (aux && parada !=aux->cod)
+                parada=aux->cod;
+        }
            ac /=contv;
-           printf("promedio %f\n",ac);
+           printf("promedio %.2f\n",ac);
 }
